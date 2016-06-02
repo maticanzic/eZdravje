@@ -24,7 +24,7 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">EHR Places</a>
+        <a class="navbar-brand" href="index.html">EHR VitalSigns & Places</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -47,7 +47,10 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno dodati <strong>osnovni opis ideje rešitve</strong> (kakšen je osnovni SCENARIJ UPORABE, KDO je ciljna publika, za kakšen NAMEN se aplikacija uporablja).</p><p class="text-muted">Opis naj ne bo daljši od 200 besed.</p>
+            <p>Aplikacija <strong>EHR VitalSigns & Places</strong> je nadgradnja osnovne aplikacije - poleg vnosa in pregleda meritev vitalnih znakov je implementiran 
+            prikaz bližnjih bolnišnic in lekarn. V ta namen je pri kreiranju EHR zapisa dodan parameter "Najbližje mesto", kjer za vsakega bolnika beležimo, katere 
+            zdravstvene ustanove so (glede na izbiro najbližjega mesta) najbolj primerne za posameznika. Aplikacija je na ta način uporabna tako za bolnika kot za zdravnike - 
+            bolniku prikaže ustanove, v katerih lahko najhitreje najde pomoč ali kupi zdravila, zdravnikom pa to predstavlja podatek, kam usmeriti bolnika.</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -57,7 +60,8 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je navesti zunanji vir podatkov (URL naslov), na kakšen način ste ga uporabili (neposredni API klic, uvožena statična datoteka ipd.) in kaj je bil namen uporabe (kako se vključuje v osnovno idejo aplikacije).</p>
+            <p> Aplikacija za prikaz bolniku najbližjega mesta in zdravstvenih ustanov uporablja API Google Maps (oz. Google Places). Zunanji vir podatkov tako služi 
+            za prikaz "Bolnišnice in lekarne v bližini" in je hkrati temelj za izris grafa, ki beleži število zdravstvenih ustanov v posameznem mestu.</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
