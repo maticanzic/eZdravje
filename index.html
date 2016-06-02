@@ -5,11 +5,95 @@
   <title>eZdravje :: 4. DN :: OIS 2015/2016</title>
   <link href="knjiznice/css/bootstrap.min.css" rel="stylesheet">
   <style>
-    body {padding-top: 70px;}
+    body {
+    	background-image: url("https://raw.githubusercontent.com/ehrscape/examples/master/demo/flip-emr/images/bg.png");
+    	padding-top: 70px;}
+    .btn {margin-top: 10px;}
+		.obvestilo {margin-left:10px;}
+		.majhna-ikona {font-size:60%; margin-left:10px}
   </style>
   <script src="knjiznice/js/jquery-2.2.3.min.js"></script>
   <script src="knjiznice/js/bootstrap.min.js"></script>
   <script src="knjiznice/js/koda.js"></script>
+  <script src="knjiznice/js/demo.js"></script>
+     <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?sensor=true&libraries=places"></script>
+
+    <style type="text/css">
+
+      #map {
+        height: 400px;
+        width: 600px;
+        border: 1px solid #333;
+        margin-top: 0.6em;
+        margin-bottom: 0.6em;
+      }
+    </style>
+	
+	<script type="text/javascript">
+      var map;
+      var infowindow;
+
+    function initialize() {
+		var lokacija;
+		var mesto;
+		switch(mesto) {
+		case "Ljubljana":
+		lokacija = new google.maps.LatLng(46.05,14.5);
+			break;
+		case "Maribor":
+			lokacija = new google.maps.LatLng(46.5547,15.6459);
+			break;
+		case "Kranj":
+			lokacija = new google.maps.LatLng(46.2428,14.3555);
+			break;
+		default: lokacija = new google.maps.LatLng(46.05,14.5);
+		}
+		
+      map = new google.maps.Map(document.getElementById('map'), {
+      mapTypeId: google.maps.MapTypeId.ROADMAP,
+      center: lokacija,
+      zoom: 13
+        });
+
+        var request = {
+          location: lokacija,
+          radius: 25000,
+          types: ['hospital', 'pharmacy', 'doctor']
+        };
+        infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.search(request, callback);
+      }
+
+      function callback(results, status) {
+        if (status == google.maps.places.PlacesServiceStatus.OK) {
+          for (var i = 0; i < results.length; i++) {
+            createMarker(results[i]);
+          }
+        }
+      }
+
+      function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+		
+		  function osveziMapo() {
+		    google.maps.event.trigger(map, 'resize');
+		    console.log(mesto);
+		  };
+		google.maps.event.addDomListener(window, 'load', initialize);
+
+
+    </script>
 </head>
 <body>
 
@@ -22,7 +106,7 @@
           <span class="icon-bar"></span><span class="icon-bar"></span><span class="icon-bar"></span>
         </button>
         <!-- ZAČETEK: Ime vaše aplikacije -->
-        <a class="navbar-brand" href="index.html">{Moja aplikacija}</a>
+        <a class="navbar-brand" href="index.html">EHR Places</a>
         <!-- KONEC: Ime vaše aplikacije -->
       </div>
       <div class="collapse navbar-collapse" id="menujska-vrstica">
@@ -39,10 +123,73 @@
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
     <div class="row">
-      <div class="col-lg-12 text-center">
-        <p class="lead"><strong>TO-DO</strong>: Na tem mestu implementirajte vašo aplikacijo.</p>
-      </div>
+    	<div class="col-lg-6 col-md-6 col-sm-6">
+	      <div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-lg-8 col-md-8 col-sm-8"><b>Kreiraj EHR zapis</b> za novega bolnika</div>
+								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Pujsa,Pepa,1938-10-30T14:58,Ljubljana">Pujsa Pepa</option></select></div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<span class="label label-default">Ime</span><input id="kreirajIme" type="text" class="form-control input-mini" placeholder="Osama">
+							<span class="label label-default">Priimek</span><input id="kreirajPriimek" type="text" class="form-control" placeholder="Bin Laden">
+							<span class="label label-default">Datum rojstva</span><input id="kreirajDatumRojstva" type="text" class="form-control" placeholder="1957-03-10T09:08">
+							<span class="label label-default">Najbližje mesto</span><select class="form-control input-sm" id="dodajNajblizjeMesto"><option value="Ljubljana">Ljubljana</option><option value="Maribor">Maribor</option><option value="Kranj">Kranj</option></select>
+							<button type="button" class="btn btn-primary btn-xs" onclick="kreirajEHRzaBolnika()">Dodaj osnovne podatke o bolniku</button><span id="kreirajSporocilo"></span>
+					  	</div>
+					</div>
+				</div>
+				
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika</div>
+								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaVitalneZnake"><option value="telesna temperatura">telesna temperatura</option><option value="telesna temperatura AQL">telesna temperatura (filter na podhladitev)</option><option value="telesna teža">telesna teža</option></select></div>
+								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option></select></div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<span class="label label-default">EHR ID</span><input id="meritveVitalnihZnakovEHRid" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+							<button type="button" class="btn btn-primary btn-xs" onclick="preberiMeritveVitalnihZnakov()" onclick="osveziMapo()">Preberi meritve vitalnih znakov</button><span id="preberiMeritveVitalnihZnakovSporocilo"></span>
+							<div id="rezultatMeritveVitalnihZnakov"></div>
+						
+					  	</div>
+					</div>
+				</div>
+			</div>
+			
+			<div class="col-lg-6 col-md- col-sm-6">
+				<div class="col-lg-12 col-md-12 col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<div class="row">
+								<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> meritve <b>vitalnih znakov</b> bolnika</div>
+								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2014-11-21T11:40Z|185|80.0|36.50|118|92|98">Ata Smrk</option></select></div>
+							</div>
+						</div>
+						<div class="panel-body">
+							<span class="label label-default">EHR ID</span><input id="dodajVitalnoEHR" type="text" class="form-control input-mini" placeholder="7b661e12-3a98-21ad-c29e-2dc9f5a3d885">
+							<span class="label label-default">Datum in ura</span><input id="dodajVitalnoDatumInUra" type="text" class="form-control input-mini" placeholder="2014-11-21T11:40Z">
+							<span class="label label-default">Telesna višina</span><div class="input-group"><input id="dodajVitalnoTelesnaVisina" type="text" class="form-control input-mini" placeholder="185"><span class="input-group-addon">cm</span></div>
+							<span class="label label-default">Telesna teža</span><div class="input-group"><input id="dodajVitalnoTelesnaTeza" type="text" class="form-control input-mini" placeholder="80.00"><span class="input-group-addon">kg</span></div>
+							<span class="label label-default">Telesna temperatura</span><div class="input-group"><input id="dodajVitalnoTelesnaTemperatura" type="text" class="form-control input-mini" placeholder="36.50"><span class="input-group-addon">°C</span></div>
+							<span class="label label-default">Sistolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakSistolicni" type="text" class="form-control input-mini" placeholder="118"><span class="input-group-addon">mm Hg</span></div>
+							<span class="label label-default">Diastolični krvni tlak</span><div class="input-group"><input id="dodajVitalnoKrvniTlakDiastolicni" type="text" class="form-control input-mini" placeholder="92"><span class="input-group-addon">mm Hg</span></div>
+							<span class="label label-default">Nasičenost krvi s kisikom</span><div class="input-group"><input id="dodajVitalnoNasicenostKrviSKisikom" type="text" class="form-control input-mini" placeholder="98"><span class="input-group-addon">%</span></div>
+							<button type="button" class="btn btn-primary btn-xs" onclick="dodajMeritveVitalnihZnakov()">Dodaj meritve vitalnih znakov</button><span id="dodajMeritveVitalnihZnakovSporocilo"></span>
+					  	</div>
+					</div>
+				</div>
+			</div>
+
     </div>
+    <div id="text"><strong>Bolnišnice in lekarne v bližini</strong></div>
+		<div id="map"></div>
+        
+
   </div>
   <!-- KONEC: Vsebina aplikacije -->
 
