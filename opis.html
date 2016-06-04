@@ -48,9 +48,10 @@
           <div class="panel-body">
             <!-- ZAČETEK: Opis ideje, ki jo aplikacija podpira -->
             <p>Aplikacija <strong>EHR VitalSigns & Places</strong> je nadgradnja osnovne aplikacije - poleg vnosa in pregleda meritev vitalnih znakov je implementiran 
-            prikaz bližnjih bolnišnic in lekarn. V ta namen je pri kreiranju EHR zapisa dodan parameter "Najbližje mesto", kjer za vsakega bolnika beležimo, katere 
+            prikaz bližnjih bolnišnic, lekarn in zobozdravnikov. V ta namen je pri kreiranju EHR zapisa dodan parameter "Najbližje mesto", kjer za vsakega bolnika beležimo, katere 
             zdravstvene ustanove so (glede na izbiro najbližjega mesta) najbolj primerne za posameznika. Aplikacija je na ta način uporabna tako za bolnika kot za zdravnike - 
-            bolniku prikaže ustanove, v katerih lahko najhitreje najde pomoč ali kupi zdravila, zdravnikom pa to predstavlja podatek, kam usmeriti bolnika.</p>
+            bolniku prikaže ustanove, v katerih lahko najbližje najde pomoč ali kupi zdravila, zdravnikom pa to predstavlja podatek, na kateri naslov usmeriti bolnika.
+            Z dropdown menijem na zemljevidu lahko uporabnik aplikacije izbira med prikazom vseh zdravstvenih ustanov ali prikazom posamezne vrste zdravstvene ustanove.</p>
             <!-- KONEC: Opis ideje, ki jo aplikacija podpira -->
           </div>
         </div>
@@ -60,8 +61,10 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p> Aplikacija za prikaz bolniku najbližjega mesta in zdravstvenih ustanov uporablja API Google Maps (oz. Google Places). Zunanji vir podatkov tako služi 
-            za prikaz "Bolnišnice in lekarne v bližini" in je hkrati temelj za izris grafa, ki beleži število zdravstvenih ustanov v posameznem mestu.</p>
+            <p> Aplikacija za prikaz bolniku najbližjega mesta in zdravstvenih ustanov, ki se nahajajo v centru mesta in okolici (nastavljeni radij je 5000m) uporablja API Google Maps (oz. Google Places). 
+            Uporabljen API predstavlja dodatek k osnovnemu namenu aplikacije (prikazu vitalnih znakov). Zunanji vir podatkov tako služi za prikaz bolnišnic, lekarn in zobozdravnikov v bližini in je hkrati 
+            temelj za izris grafa, ki beleži število zdravstvenih ustanov v posameznem mestu. Število ustanov, ki jih API najde, je hkrati številka, ki jo zapišemo v graf kot "število {ustanova} v {mesto}".</p>
+            <a href="https://developers.google.com/maps/documentation/javascript/tutorial">Povezava do uporabljenega zunanjega vira podatkov (Google Maps / Places API)</a>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>
@@ -81,7 +84,7 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p><strong>TO-DO</strong>: Na tem mestu je potrebno navesti uporabljeno tehniko vizualizacije podatkov (za pomoč lahko uporabite primer iz <a href="https://github.com/mbostock/d3/wiki/Gallery" target="_blank">D3.js galerije</a>) in zakaj je bila ta tehnika izbrana.</p>
+            <p>Uporabljen graf iz amcharts.com...</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>

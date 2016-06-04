@@ -32,8 +32,7 @@ function kreirajEHRzaBolnika() {
 	var priimek = $("#kreirajPriimek").val();
 	var datumRojstva = $("#kreirajDatumRojstva").val();
 	var najblizjeMesto = $("#dodajNajblizjeMesto").val();
-	console.log(priimek);
-	console.log("najblizje mesto je: "+najblizjeMesto);
+
 	if (!ime || !priimek || !datumRojstva || !najblizjeMesto || ime.trim().length == 0 ||
       priimek.trim().length == 0 || datumRojstva.trim().length == 0 || najblizjeMesto.trim().length == 0) {
 		$("#kreirajSporocilo").html("<span class='obvestilo label " +
@@ -51,7 +50,10 @@ function kreirajEHRzaBolnika() {
 		            firstNames: ime,
 		            lastNames: priimek,
 		            dateOfBirth: datumRojstva,
-		            partyAdditionalInfo: [{key: "ehrId", value: ehrId}, {key: "najblizjeMesto", value: najblizjeMesto}]
+		            address: {
+		            	address: najblizjeMesto
+		            },
+		            partyAdditionalInfo: [{key: "ehrId", value: ehrId}]
 		        };
 		        $.ajax({
 		            url: baseUrl + "/demographics/party",
@@ -166,7 +168,7 @@ function preberiMeritveVitalnihZnakov() {
 				var party = data.party;
 				$("#rezultatMeritveVitalnihZnakov").html("<br/><span>Pridobivanje " +
           "podatkov za <b>'" + tip + "'</b> bolnika <b>'" + party.firstNames +
-          " " + party.lastNames + "'</b>.</span><br/><br/>");
+          " " + party.lastNames + " iz kraja " + party.address["address"] +"'</b>.</span><br/><br/>");
 				if (tip == "telesna temperatura") {
 					$.ajax({
   					    url: baseUrl + "/view/" + ehrId + "/" + "body_temperature",
@@ -276,7 +278,10 @@ function preberiMeritveVitalnihZnakov() {
 	    	}
 		});
 	}
+	osveziMapo();
+
 }
+
 
 
 $(document).ready(function() {
@@ -334,5 +339,11 @@ $(document).ready(function() {
 		$("#rezultatMeritveVitalnihZnakov").html("");
 		$("#meritveVitalnihZnakovEHRid").val($(this).val());
 	});
+	
+	$(function(){
+      $("#preberiMeritve").click(function(){
+        $("#map").focus();
+		});
+	}).delay(1500);
 
 });
