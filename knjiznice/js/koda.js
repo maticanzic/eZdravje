@@ -185,7 +185,7 @@ function vnosGeneriranihPodatkov(ehrId, datumInUra, telesnaVisina, telesnaTeza, 
 
 // TODO: Tukaj implementirate funkcionalnost, ki jo podpira vaša aplikacija
 
-  window.onload = function () {
+  window.onload = function narisiGraf() {
     var chart = AmCharts.makeChart("chartdiv", {
     "type": "serial",
 	"theme": "dark",

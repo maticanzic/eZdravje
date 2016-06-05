@@ -343,6 +343,7 @@ $(document).ready(function() {
 	$(function(){
       $("#preberiMeritve").click(function(){
         $("#map").focus();
+    
 		});
 	}).delay(1500);
 
