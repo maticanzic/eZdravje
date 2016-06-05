@@ -63,7 +63,8 @@
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
             <p> Aplikacija za prikaz bolniku najbližjega mesta in zdravstvenih ustanov, ki se nahajajo v centru mesta in okolici (nastavljeni radij je 5000m) uporablja API Google Maps (oz. Google Places). 
             Uporabljen API predstavlja dodatek k osnovnemu namenu aplikacije (prikazu vitalnih znakov). Zunanji vir podatkov tako služi za prikaz bolnišnic, lekarn in zobozdravnikov v bližini in je hkrati 
-            temelj za izris grafa, ki beleži število zdravstvenih ustanov v posameznem mestu. Število ustanov, ki jih API najde, je hkrati številka, ki jo zapišemo v graf kot "število {ustanova} v {mesto}".</p>
+            temelj za izris grafa, ki beleži število zdravstvenih ustanov v posameznem mestu. 
+            Število ustanov, ki jih API najde, je hkrati številka, ki jo zapišemo v graf kot "število {ustanova} v {mesto}".</p>
             <a href="https://developers.google.com/maps/documentation/javascript/tutorial">Povezava do uporabljenega zunanjega vira podatkov (Google Maps / Places API)</a>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
@@ -74,7 +75,9 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Master/detail načrtovalski vzorec -->
-            <p><strong>TO-DO</strong>: Na tem mestu morate navesti uporabljen master/detail načrtovalski vzorec in na kakšen način ga nameravate uporabiti.</p>
+            <p>Master/detail načrtovalski vzorec v moji aplikaciji predstavlja filtriranje zdravstvenih ustanov po tipu. Uporabnik lahko na zemljevidu izbira med štirimi različnimi prikazi
+            ustanov na zemljevidu: "Vse zdravstvene ustanove", "Lekarna", "Bolnišnica" in "Zobozdravnik", glede na izbiro pa se mu prikažejo ustrezni 'markerji' na zemljevidu.
+            Primer master/detail je tudi graf, saj omogoča prikazovanje celotne statistike ali statistike posameznih zdravstvenih ustanov.</p>
             <!-- KONEC: Master/detail načrtovalski vzorec -->
           </div>
         </div>
@@ -84,7 +87,11 @@
           </div>
           <div class="panel-body">
             <!-- ZAČETEK: Uporabljeni zunanji viri podatkov -->
-            <p>Uporabljen graf iz amcharts.com...</p>
+            <p>Vizualizacijo podatkov predstavlja graf v obliki "Stacked Column Chart", ki prikazuje število zdravstvenih ustanov v odvisnosti od posameznega mesta. Podatki so zabeleženi iz
+            rezultatov, ki jih je za vsako vrsto zdravstvene ustanove prikazal Googlov Maps API. S klikom na posamezno ustanovo (v 'legendi', desno ob grafu) lahko graf spreminjamo tako, 
+            da s klikom odstranimo ali dodamo posamezno ustanovo z grafa.
+            Izvorno kodo za graf sem pridobil s strani <a href="https://www.amcharts.com/demos/">AmCharts.com</a> preko knjižnic 'amcharts.js' in 'serial.js'. Za takšen prikaz sem se odločil,
+            ker omogoča delitev stolpca glede na tip ustanove in ker lahko preprosto, z nekaj kliki, prikažemo 4 različne grafe (celotnega ali za vsako zdravstveno ustanovo posamično).</p>
             <!-- KONEC: Uporabljeni zunanji viri podatkov -->
           </div>
         </div>

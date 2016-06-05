@@ -106,12 +106,9 @@
       }
 
       function callback(results, status) {
-        stevec = 0;
         if (status == google.maps.places.PlacesServiceStatus.OK) {
           for (var i = 0; i < results.length; i++) {
             createMarker(results[i]);
-            stevec++;
-            console.log(stevec);
           }
         }
       }
@@ -131,7 +128,6 @@
 		
 		  function osveziMapo() {
         izbranaUstanova = $("#placesearch").val();
-        console.log(izbranaUstanova);
 		    var ehrId = $("#meritveVitalnihZnakovEHRid").val();
         $.ajax({
     			url: baseUrl + "/demographics/ehr/" + ehrId + "/party",
@@ -151,116 +147,6 @@
 
 		google.maps.event.addDomListener(window, 'load', initialize);
 
-  window.onload = function () {
-    var chart = AmCharts.makeChart("chartdiv", {
-    "type": "serial",
-	"theme": "dark",
-    "legend": {
-        "horizontalGap": 10,
-        "maxColumns": 1,
-        "position": "right",
-		"useGraphSettings": true,
-		"markerSize": 10
-    },
-    "dataProvider": [{
-        "mesto": "Ljubljana",
-        "lekarne": 20.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 20.0,
-    }, {
-        "mesto": "Maribor",
-        "lekarne": 16.0,
-        "bolnisnice": 3.0,
-        "zobozdravniki": 20.0,
-    }, {
-        "mesto": "Kranj",
-        "lekarne": 10.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 12.0,
-
-    }, {
-        "mesto": "Celje",
-        "lekarne": 12.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 14.0,
-    }, {
-        "mesto": "Ptuj",
-        "lekarne": 5.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 12.0,
-    }, {
-        "mesto": "Slovenj Gradec",
-        "lekarne": 2.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 3.0,
-    }, {
-        "mesto": "Koper",
-        "lekarne": 8.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 20.0,
-    }, {
-        "mesto": "Novo mesto",
-        "lekarne": 8.0,
-        "bolnisnice": 3.0,
-        "zobozdravniki": 15.0,
-    }, {
-        "mesto": "Nova Gorica",
-        "lekarne": 8.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 13.0,
-    }, {
-        "mesto": "Kamnik",
-        "lekarne": 5.0,
-        "bolnisnice": 1.0,
-        "zobozdravniki": 3.0,
-    }],
-    "valueAxes": [{
-        "stackType": "regular",
-        "axisAlpha": 0.3,
-        "gridAlpha": 0
-    }],
-    "graphs": [{
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-        "fillAlphas": 0.8,
-        "labelText": "[[value]]",
-        "lineAlpha": 0.3,
-        "title": "Lekarne",
-        "type": "column",
-		"color": "#000000",
-        "valueField": "lekarne"
-    }, {
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-        "fillAlphas": 0.8,
-        "labelText": "[[value]]",
-        "lineAlpha": 0.3,
-        "title": "Bolnišnice",
-        "type": "column",
-		"color": "#000000",
-        "valueField": "bolnisnice"
-    }, {
-        "balloonText": "<b>[[title]]</b><br><span style='font-size:14px'>[[category]]: <b>[[value]]</b></span>",
-        "fillAlphas": 0.8,
-        "labelText": "[[value]]",
-        "lineAlpha": 0.3,
-        "title": "Zobozdravniki",
-        "type": "column",
-		"color": "#000000",
-        "valueField": "zobozdravniki"
-    }],
-    "categoryField": "mesto",
-    "categoryAxis": {
-        "gridPosition": "start",
-        "axisAlpha": 0,
-        "gridAlpha": 0,
-        "position": "left"
-    },
-    "export": {
-    	"enabled": true
-     }
-
-});
-    
-  }
     </script>
 </head>
 <body>
@@ -281,7 +167,7 @@
         <ul class="nav navbar-nav">
           <li><a href="opis.html">Opis ideje</a></li>
           <li><a href="nacrt.html">Načrt informacijske rešitve</a></li>
-          <li><a href="#">Generiranje podatkov</a></li>
+          <li><a href="javascript:void(0)" onClick="klicGeneriranjaPodatkov()">Generiranje podatkov</a></li>
         </ul>
       </div>
     </div>
@@ -290,6 +176,7 @@
 
   <!-- ZAČETEK: Vsebina aplikacije -->
   <div class="container">
+    <div id="prazen"></div>
     <div class="row">
     	<div class="col-lg-6 col-md-6 col-sm-6">
 	      <div class="col-lg-12 col-md-12 col-sm-12">
@@ -297,7 +184,6 @@
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8"><b>Kreiraj EHR zapis</b> za novega bolnika</div>
-								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiPredlogoBolnika"><option value=""></option><option value="Pujsa,Pepa,1938-10-30T14:58,Ljubljana">Pujsa Pepa</option></select></div>
 							</div>
 						</div>
 						<div class="panel-body">
@@ -318,7 +204,8 @@
 							<div class="row">
 								<div class="col-lg-6 col-md-6 col-sm-6"><b>Pregled</b> meritev <b>vitalnih znakov</b> bolnika in <b>prikaz zdr. ustanov v njegovi bližini</b></div>
 								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiTipZaVitalneZnake"><option value="telesna temperatura">telesna temperatura</option><option value="telesna temperatura AQL">telesna temperatura (filter na podhladitev)</option><option value="telesna teža">telesna teža</option></select></div>
-								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02">Ata Smrk</option><option value="d564c6a3-5a43-4fcc-bfa7-9ac76e9673bd">Pujsa Pepa</option></select></div>
+								<div class="col-lg-3 col-md-3 col-sm-3"><select class="form-control input-sm" id="preberiEhrIdZaVitalneZnake"><option value=""></option><option value="d9393a6c-d785-45b9-a2b3-817c25b44785">Peter Vzorčni</option>
+								<option value="9b3fac53-25dd-40de-aefa-e68697352d53">Ana Vzorec</option><option value="b6e5f4ad-f54a-44af-935f-b9d3467669e9">Tihomir Testni</option></select></div>
 							</div>
 						</div>
 						<div class="panel-body">
@@ -331,13 +218,14 @@
 				</div>
 			</div>
 			
-			<div class="col-lg-6 col-md-6 col-sm-6">
+			<div class="col-lg-6 col-md- col-sm-6">
 				<div class="col-lg-12 col-md-12 col-sm-12">
 					<div class="panel panel-default">
 						<div class="panel-heading">
 							<div class="row">
 								<div class="col-lg-8 col-md-8 col-sm-8"><b>Vnos</b> meritve <b>vitalnih znakov</b> bolnika</div>
-								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="b931580f-2b05-488b-985b-8d9ffb08ad02|2014-11-21T11:40Z|185|80.0|36.50|118|92|98">Ata Smrk</option></select></div>
+								<div class="col-lg-4 col-md-4 col-sm-4"><select class="form-control input-sm" id="preberiObstojeciVitalniZnak"><option value=""></option><option value="d9393a6c-d785-45b9-a2b3-817c25b44785|2012-10-21T23:33Z|191|80.0|30.50|120|90|98">Peter Vzorčni</option>
+								<option value="9b3fac53-25dd-40de-aefa-e68697352d53|2012-10-21T23:33Z|178|85.0|36.50|120|90|98">Ana Vzorec</option><option value="b6e5f4ad-f54a-44af-935f-b9d3467669e9|2012-10-21T23:33Z|171|95.0|37.50|120|90|98">Tihomir Testni</option></select></div>
 							</div>
 						</div>
 						<div class="panel-body">
@@ -368,7 +256,7 @@
 		    <div id="map" class="map" tabindex="-1"></div>
       </div>
       <div class="col-lg-12 cold-md-12 col-sm-12" style= "margin-bottom: 10px">
-        <div id="text" class="text"><strong>Graf števila zdravstvenih ustanov glede na mesto</strong> -> Klik v legendi odstrani ali doda posamezno zdr. ustanovo na graf</div>
+        <div id="text" class="text"><strong>Graf števila zdravstvenih ustanov glede na mesto</strong> -> Klik v legendi odstrani ali doda posamezno zdr. ustanovo na graf.</div>
          <div id="chartdiv" float="right"></div>	
          </div>
   </div>
